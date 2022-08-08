@@ -1,15 +1,6 @@
-import React from 'react';
-import { CommentsType } from '../../additional';
 import Chevron from '../../public/chevron.svg';
 import Rating from './Rating';
-
-type CommentProps = {
-  comment: CommentsType;
-  onClick: (upvote: boolean) => void;
-  user: string;
-};
-
-export default function Comment({ comment, onClick, user }: CommentProps) {
+export default function Comment({ comment, onClick, user }) {
   return (
     <div className="bg-dark-card p-4 md:p-8 rounded-4xl flex items-center shadow-8 gap-x-8 mb-6">
       <div className="gap-y-4 flex flex-col justify-center">
@@ -47,9 +38,7 @@ export default function Comment({ comment, onClick, user }: CommentProps) {
       </div>
       <div className="flex-grow">
         <div className="flex justify-between min-w-full items-start mb-3 ">
-          <h3 className="text-2xl font-bold text-white-high">
-            {comment.title}
-          </h3>
+          <h3 className="text-2xl font-bold text-white-high">{comment.title}</h3>
           <div>
             {comment.user !== 'default' ? (
               <div className="text-right pr-4">{comment.user}</div>
