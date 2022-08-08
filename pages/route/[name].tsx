@@ -1,4 +1,4 @@
-//@ts-nocheck
+/* //@ts-nocheck */
 
 import Layout from '../../components/Layout';
 import Image from 'next/image';
@@ -7,10 +7,25 @@ import { getFrGrade } from '../../utils/infoCalc';
 import Rating from '../../components/ui/Rating';
 import Link from 'next/link';
 import CommentSection from '../../components/CommentSection';
-import { useState } from 'react';
+import {
+  ChangeEvent,
+  ParamHTMLAttributes,
+  SyntheticEvent,
+  useState,
+} from 'react';
 import Close from '../../public/close.svg';
 import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
+import {
+  GetStaticProps,
+  GetStaticPropsContext,
+  NextApiRequest,
+  NextPageContext,
+} from 'next';
+import { RequestData } from 'next/dist/server/web/types';
+import { WithId } from 'mongodb';
+import { AppPropsType } from 'next/dist/shared/lib/utils';
+import { Props, ScriptProps } from 'next/script';
 
 type RoutePage = {
   route: RoutesType;
@@ -32,7 +47,7 @@ export default function RoutePage({ route, comments }: RoutePage) {
   const sum = comments.reduce((acc, cur) => acc + cur.rating, 0);
   const rating = sum / comments.length || 0;
 
-  function handleChange(changeEvent: { target: { files: Blob[] } }) {
+  function handleChange(changeEvent: ChangeEvent<HTMLFormElement>) {
     const reader = new FileReader();
     reader.onload = (onloadEvent) => {
       setImageSrc(
@@ -48,24 +63,23 @@ export default function RoutePage({ route, comments }: RoutePage) {
     setImageSrc('');
     setUploadImage((prevState) => !prevState);
   }
-
-  async function handleSubmit(e) {
+  async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     try {
       const cloudinaryId = process.env.NEXT_PUBLIC_CLOUDINARY_ID;
-      const form = e.currentTarget;
+      const form = e.currentTarget as HTMLFormElement;
       const fileInput = Array.from(form.elements).find(
-        ({ name }) => name === 'file'
+        (name: any) => name.name === 'file'
       );
       const formData = new FormData();
-      if (fileInput.files[0].size > 1048576) {
+      if ((fileInput as HTMLInputElement).files![0].size > 1048576) {
         setFormDisabled(true);
         return;
       } else {
         setUploadingImage(true);
         setFormDisabled(false);
       }
-      for (const file of fileInput.files) {
+      for (const file of (fileInput as HTMLInputElement).files!) {
         formData.append('file', file);
       }
       formData.append('upload_preset', 'climbing-crags');
@@ -81,7 +95,7 @@ export default function RoutePage({ route, comments }: RoutePage) {
       setUploadingImage(false);
       setUploadImage(false);
       setRouteImage(json.secure_url);
-      e.target.reset();
+      (e.target as HTMLFormElement).reset();
       const response = await fetch(`/api/routes/`, {
         method: 'PUT',
         headers: {
@@ -110,7 +124,7 @@ export default function RoutePage({ route, comments }: RoutePage) {
             <Link href={`/sector/${route.sector_id}`}>
               <a>{route.sector}, </a>
             </Link>
-            <Link href={`/crag/${route.crag.toLowerCase()}`}>
+            <Link href={`/crag/${route.crag ? route.crag.toLowerCase() : ''}`}>
               <a>{route.crag}</a>
             </Link>
           </h4>
@@ -122,7 +136,12 @@ export default function RoutePage({ route, comments }: RoutePage) {
               </div>
             </div>
             <div className="pt-8 text-2xl text-white flex items-center gap-x-4">
-              Rating: <Rating rating={rating ? rating : route.rating} />
+              Rating:{' '}
+              <Rating
+                rating={rating ? rating : route.rating}
+                notBoxed={false}
+                className={''}
+              />
             </div>
             <label className="relative group">
               <button
@@ -238,7 +257,7 @@ export default function RoutePage({ route, comments }: RoutePage) {
   );
 }
 
-RoutePage.getLayout = function getLayout(page) {
+RoutePage.getLayout = function getLayout(page: RoutePage) {
   return <Layout>{page}</Layout>;
 };
 
@@ -262,7 +281,7 @@ export async function getStaticPaths() {
 }
 
 // this preloads all the crag info for the specific paths
-export async function getStaticProps(ctx) {
+export async function getStaticProps(ctx: GetStaticPropsContext) {
   let route;
   let comments;
   let client;
@@ -271,7 +290,7 @@ export async function getStaticProps(ctx) {
     const db = client.db('Climbing-crags');
     const routesCollection = db.collection('routes');
     const routesCursor = await routesCollection.find({
-      id: ctx.params.name,
+      id: ctx.params ? ctx.params.name : '',
     });
     route = await routesCursor
       .map((route) => {
@@ -280,11 +299,11 @@ export async function getStaticProps(ctx) {
       .toArray();
     const commentsCollection = db.collection('comments');
     const commentsCursor = await commentsCollection.find({
-      path: `/route/${ctx.params.name}`,
+      path: `/route/${ctx.params ? ctx.params.name : ''}`,
     });
     comments = await commentsCursor
       .map((comment) => {
-        return { ...comment, _id: comment._id.toString() };
+        return { ...comment, _id: comment._id.toString() } as CommentsType;
       })
       .toArray();
     comments.sort((a, b) => b.comment_rating - a.comment_rating);
@@ -294,7 +313,7 @@ export async function getStaticProps(ctx) {
 
   return {
     props: {
-      route: route[0],
+      route: route ? route[0] : '',
       comments,
     },
   };

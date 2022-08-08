@@ -1,5 +1,8 @@
 declare global {
   var _mongoClientPromise: Promise;
+  import { NextPage } from 'next';
+  import { AppProps } from 'next/app';
+  import React, { ReactElement, ReactNode } from 'react';
 
   type Sector = {
     sector: string;
@@ -9,12 +12,6 @@ declare global {
     country: string;
     routes: array[];
   };
-
-  import { NextPage } from 'next';
-  import { AppProps } from 'next/app';
-  import React, { ReactElement, ReactNode } from 'react';
-
-  // Contents of this file should be merged into index.d.ts
 
   export type CommentsType = {
     _id: string;

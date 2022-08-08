@@ -18,8 +18,8 @@ export default NextAuth({
       from: process.env.EMAIL_FROM,
     }), */
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
+      clientId: process.env.GOOGLE_ID ? process.env.GOOGLE_ID : '',
+      clientSecret: process.env.GOOGLE_SECRET ? process.env.GOOGLE_SECRET : '',
       authorization: {
         params: {
           prompt: 'consent',
@@ -37,7 +37,7 @@ export default NextAuth({
   ],
   secret: process.env.SECRET,
   session: {
-    jwt: true,
+    strategy: 'jwt',
   },
   theme: {
     colorScheme: 'dark',

@@ -6,17 +6,25 @@ import InfoCard from '../../components/ui/InfoCard';
 import RoutesTable from '../../components/RoutesTable';
 import clientPromise from '../../utils/mongodb';
 import Link from 'next/link';
-import { routesWithCommentsPipeline, sectorPagePipeline } from '../../utils/pipelines';
+import {
+  routesWithCommentsPipeline,
+  sectorPagePipeline,
+} from '../../utils/pipelines';
 import { buildUrl } from 'cloudinary-build-url';
+import { GetStaticPropsContext } from 'next';
 
-export default function SectorPage({ routes, sector }) {
+type SectorPageProps = {
+  routes: RoutesType[];
+  sector: SectorsType;
+};
+
+export default function SectorPage({ routes, sector }: SectorPageProps) {
   const [sectorData, setSectorData] = useState(sector);
   const [info, setInfo] = useState(calcRoutesAndDifficulty(sector, 'sectors'));
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
 
   useEffect(() => {
     if (sector.images?.length) {
-      console.log('saodkas');
       const imageId = sector.images[0][0].id;
       const url = buildUrl(imageId, {
         cloud: {
@@ -70,17 +78,23 @@ export default function SectorPage({ routes, sector }) {
           difficulties={info.difficulties}
           rating={info.rating}
           type={'sector'}
-          classes={'absolute z-10 md:left-[23%] md:top-[40%] top-2/3 left-[10%]'}
+          classes={
+            'absolute z-10 md:left-[23%] md:top-[40%] top-2/3 left-[10%]'
+          }
         />
       </section>
       <section className="px-4 md:px-36 md:pt-12 pb-32">
-        <RoutesTable routes={routes} sector={sectorData.sector} crag={sectorData.crag} />
+        <RoutesTable
+          routes={routes}
+          sector={sectorData.sector}
+          crag={sectorData.crag}
+        />
       </section>
     </>
   );
 }
 
-SectorPage.getLayout = function getLayout(page) {
+SectorPage.getLayout = function getLayout(page: SectorPageProps) {
   return <Layout>{page}</Layout>;
 };
 
@@ -118,21 +132,25 @@ export async function getStaticPaths() {
 }
 
 // this preloads all the crag info for the specific paths
-export async function getStaticProps(ctx) {
-  let sectors;
+export async function getStaticProps(ctx: GetStaticPropsContext) {
+  let sectors: SectorsType[] = [];
   let routes;
   try {
     const client = await clientPromise;
     const db = client.db('Climbing-crags');
     const routesCollection = db.collection('routes');
     const sectorsCollection = db.collection('sectors');
-    const sectorCursor = await sectorsCollection.aggregate(sectorPagePipeline(ctx));
+    const sectorCursor = await sectorsCollection.aggregate(
+      sectorPagePipeline(ctx)
+    );
     sectors = await sectorCursor
       .map((sector) => {
-        return { ...sector, _id: sector._id.toString() };
+        return { ...sector, _id: sector._id.toString() } as SectorsType;
       })
       .toArray();
-    const routesCursor = await routesCollection.aggregate(routesWithCommentsPipeline(ctx));
+    const routesCursor = await routesCollection.aggregate(
+      routesWithCommentsPipeline(ctx)
+    );
     routes = await routesCursor
       .map((route) => {
         return { ...route, _id: route._id.toString() };
