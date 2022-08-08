@@ -1,19 +1,30 @@
 import { gradesObj } from './grades';
 const grades = gradesObj();
-export function calcRoutesAndDifficulty(item: any, type: string) {
+
+type returnType = {
+  routes: string;
+  rating: string;
+  difficulties: string;
+};
+
+export function calcRoutesAndDifficulty(item: any, type: string): returnType {
   let numberOfRoutes = 0;
   let rating = 0;
-  switch (type) {
-    case 'crags':
+
+  const hasItemAndType = item && (type === 'crags' || type === 'sectors');
+
+  if (hasItemAndType) {
+    if (type === 'crags') {
       let difficulties: Difficulty = { high: 0, low: 1000 };
       item.sectors.forEach((sector: Sector) => {
         let sectorDifficulties = sector.routes.reduce(
           (prev, curr) => {
-            if (prev.high < parseInt(curr.grade_id)) {
-              prev.high = curr.grade_id;
+            const gradeId = parseInt(curr.grade_id);
+            if (prev.high < gradeId) {
+              prev.high = gradeId;
             }
-            if (prev.low > parseInt(curr.grade_id)) {
-              prev.low = curr.grade_id;
+            if (prev.low > gradeId) {
+              prev.low = gradeId;
             }
             return prev;
           },
@@ -37,14 +48,16 @@ export function calcRoutesAndDifficulty(item: any, type: string) {
         rating: (rating / numberOfRoutes).toFixed(1),
         difficulties: stringifyDifficulties(difficulties),
       };
-    case 'sectors':
+    }
+    if (type === 'sectors') {
       let sectorDifficulties = item.routes.reduce(
         (prev: Difficulty, curr: Route) => {
-          if (prev.high < parseInt(curr.grade_id)) {
-            prev.high = parseInt(curr.grade_id);
+          const gradeId = parseInt(curr.grade_id);
+          if (prev.high < gradeId) {
+            prev.high = gradeId;
           }
-          if (prev.low > parseInt(curr.grade_id)) {
-            prev.low = parseInt(curr.grade_id);
+          if (prev.low > gradeId) {
+            prev.low = gradeId;
           }
           return prev;
         },
@@ -59,9 +72,13 @@ export function calcRoutesAndDifficulty(item: any, type: string) {
         rating: (rating / numberOfRoutes).toFixed(1),
         difficulties: stringifyDifficulties(sectorDifficulties),
       };
-    default:
-      return {};
+    }
   }
+  return {
+    routes: '',
+    rating: '',
+    difficulties: '',
+  };
 }
 
 function stringifyDifficulties(difficulties: Difficulty) {
