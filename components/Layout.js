@@ -3,12 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import UserPlaceholder from '../public/user.svg';
-import React from 'react';
-import { ReactNodeWithProps } from '../additional';
 
-export default function Layout({ children }: { children: ReactNodeWithProps }) {
+export default function Layout({ children }) {
   const { data: session } = useSession();
-
   return (
     <>
       <Head>
@@ -36,18 +33,13 @@ export default function Layout({ children }: { children: ReactNodeWithProps }) {
           <div>
             {session ? (
               <div className="group text-white flex flex-row items-center relative cursor-pointer">
-                <span className="hidden md:block">
-                  {session && session.user ? session.user.name : ''}
-                </span>
+                <span className="hidden md:block">{session.user.name}</span>
                 <div className="w-8 h-8 ml-4 relative rounded-3xl overflow-hidden bg-white p-1">
-                  {session && session.user ? session.user.image : ''} ? (
-                  <Image
-                    alt="Logged User image"
-                    layout="fill"
-                    src={session!.user!.image!}
-                  />
+                  {session.user.image ? (
+                    <Image alt="Logged User image" layout="fill" src={session.user.image} />
                   ) : (
-                  <UserPlaceholder />)
+                    <UserPlaceholder />
+                  )}
                 </div>
                 <button
                   onClick={() => {
@@ -69,9 +61,7 @@ export default function Layout({ children }: { children: ReactNodeWithProps }) {
           </div>
         </div>
       </header>
-      <main className="bg-dark text-white min-h-screen pt-16 overflow-x-hidden">
-        {children}
-      </main>
+      <main className="bg-dark text-white min-h-screen pt-16 overflow-x-hidden">{children}</main>
     </>
   );
 }

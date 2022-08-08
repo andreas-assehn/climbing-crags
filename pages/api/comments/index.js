@@ -2,7 +2,7 @@ import clientPromise from '../../../utils/mongodb';
 import { ObjectId } from 'mongodb';
 
 //TODO Add secret key to prevent unauthorized access
-export default async function handler(req: Request, res: Response) {
+export default async function handler(req, res) {
   const body = req.body;
   if (req.method === 'POST') {
     const client = await clientPromise;
@@ -71,7 +71,7 @@ export default async function handler(req: Request, res: Response) {
               [`${email}`]: body.vote,
             },
           },
-        }
+        },
       );
       return res.status(200).json(commentsCursor);
     } catch (error) {

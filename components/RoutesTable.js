@@ -1,15 +1,8 @@
 import Rating from './ui/Rating';
 import { getFrGrade } from '../utils/infoCalc';
 import Link from 'next/link';
-import { RoutesType } from '../additional';
 
-type RoutesTableType = {
-  routes: RoutesType[];
-  crag: string;
-  sector: string;
-};
-
-export default function RoutesTable({ routes, crag, sector }: RoutesTableType) {
+export default function RoutesTable({ routes, crag, sector }) {
   return (
     <div>
       <h3 className="text-5xl pb-10 pt-16 bold">Routes</h3>
@@ -18,12 +11,8 @@ export default function RoutesTable({ routes, crag, sector }: RoutesTableType) {
         <div className="col-span-5 hidden md:block">NAME</div>
         <div className="col-span-6 md:hidden">GRADE & NAME</div>
         <div className="col-span-2 hidden md:block text-center">COMMENTS</div>
-        <div className="col-span-2 col-start-9 hidden md:block text-center">
-          IMAGES
-        </div>
-        <div className="col-span-6 md:col-span-2 md:col-start-11 text-center">
-          RATING
-        </div>
+        <div className="col-span-2 col-start-9 hidden md:block text-center">IMAGES</div>
+        <div className="col-span-6 md:col-span-2 md:col-start-11 text-center">RATING</div>
       </div>
       {routes.map((item, i) => {
         return (
@@ -46,11 +35,7 @@ export default function RoutesTable({ routes, crag, sector }: RoutesTableType) {
                   {item.images ? item.images.length : 0}
                 </div>
                 <div className="col-span-6 md:col-span-2 md:col-start-11 flex justify-center items-center">
-                  <Rating
-                    rating={item.avgRating ? item.avgRating : item.rating}
-                    notBoxed={true}
-                    className={''}
-                  />
+                  <Rating rating={item.avgRating ? item.avgRating : item.rating} notBoxed={true} />
                 </div>
               </div>
             </a>
