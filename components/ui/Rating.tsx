@@ -1,13 +1,21 @@
 import Image from 'next/image';
 
 type RatingProps = {
-  rating: number; // convert to float
+  rating: number;
   notBoxed: boolean;
   className: string;
 };
 
-// rating = number > 0 < 5, notBoxed = bool, className = (optional)tailwind styling
 function Rating({ rating, notBoxed, className }: RatingProps) {
+  let cleanRating: number = 0;
+  if (rating || rating === 0) {
+    const rangedRating = +(rating > 5
+      ? (rating = 5)
+      : rating < 0
+      ? (rating = 0)
+      : rating);
+    cleanRating = Math.round(rangedRating * 100) / 100;
+  }
   return (
     <div
       className={
@@ -18,7 +26,7 @@ function Rating({ rating, notBoxed, className }: RatingProps) {
     >
       <Image
         src={`/star-${
-          rating >= 1 ? 'full' : rating > 0.5 ? 'half' : 'empty'
+          cleanRating >= 1 ? 'full' : cleanRating > 0.5 ? 'half' : 'empty'
         }.svg`}
         alt="star svg"
         width={32}
@@ -26,7 +34,7 @@ function Rating({ rating, notBoxed, className }: RatingProps) {
       />
       <Image
         src={`/star-${
-          rating >= 2 ? 'full' : rating > 1.5 ? 'half' : 'empty'
+          cleanRating >= 2 ? 'full' : cleanRating > 1.5 ? 'half' : 'empty'
         }.svg`}
         alt="star svg"
         width={32}
@@ -34,7 +42,7 @@ function Rating({ rating, notBoxed, className }: RatingProps) {
       />
       <Image
         src={`/star-${
-          rating >= 3 ? 'full' : rating > 2.5 ? 'half' : 'empty'
+          cleanRating >= 3 ? 'full' : cleanRating > 2.5 ? 'half' : 'empty'
         }.svg`}
         alt="star svg"
         width={32}
@@ -42,7 +50,7 @@ function Rating({ rating, notBoxed, className }: RatingProps) {
       />
       <Image
         src={`/star-${
-          rating >= 4 ? 'full' : rating > 3.5 ? 'half' : 'empty'
+          cleanRating >= 4 ? 'full' : cleanRating > 3.5 ? 'half' : 'empty'
         }.svg`}
         alt="star svg"
         width={32}
@@ -50,7 +58,7 @@ function Rating({ rating, notBoxed, className }: RatingProps) {
       />
       <Image
         src={`/star-${
-          rating >= 5 ? 'full' : rating > 4.5 ? 'half' : 'empty'
+          cleanRating >= 5 ? 'full' : cleanRating > 4.5 ? 'half' : 'empty'
         }.svg`}
         alt="star svg"
         width={32}
