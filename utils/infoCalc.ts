@@ -52,12 +52,12 @@ export function calcRoutesAndDifficulty(item: any, type: string): returnType {
     if (type === 'sectors') {
       let sectorDifficulties = item.routes.reduce(
         (prev: Difficulty, curr: Route) => {
-          const gradeId = parseInt(curr.grade_id);
-          if (prev.high < gradeId) {
-            prev.high = gradeId;
+          const current = parseInt(curr.grade_id);
+          if (prev.high < current) {
+            prev.high = current;
           }
-          if (prev.low > gradeId) {
-            prev.low = gradeId;
+          if (prev.low > current) {
+            prev.low = current;
           }
           return prev;
         },
