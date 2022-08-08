@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 //TODO Add secret key to prevent unauthorized access
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse
 ) {
   const body = req.body;
   if (req.method === 'POST') {
