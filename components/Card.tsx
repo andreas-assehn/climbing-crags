@@ -13,34 +13,22 @@ type CardProps = {
 function Card({ item, type }: CardProps) {
   const [routesCount, setRoutesCount] = useState('');
   const [difficulty, setDifficulty] = useState('');
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState('0');
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
 
   useEffect(() => {
-    if (item) {
-      let { routes, rating, difficulties } = calcRoutesAndDifficulty(
+    const hasItemAndType = item && (type === 'crags' || type === 'sectors');
+
+    if (hasItemAndType) {
+      const { routes, rating, difficulties } = calcRoutesAndDifficulty(
         item,
         type
       );
-      switch (type) {
-        case 'crags':
-          setRoutesCount(routes);
-          // needs to be fixed when InfoCalc.ts is finished
-          // -----------------------------------------------
-          setRating(rating as unknown as number);
-          setDifficulty(difficulties as unknown as string);
-          // -----------------------------------------------
-          break;
-        case 'sectors':
-          setRoutesCount(routes);
-          // -----------------------------------------------
-          setRating(rating as unknown as number);
-          setDifficulty(difficulties as unknown as string);
-          // -----------------------------------------------
-          setRoutesCount(item.routes.length + '+');
-          break;
-        default:
-          break;
+      setRoutesCount(routes);
+      setRating(rating);
+      setDifficulty(difficulties);
+      if (type === 'sectors') {
+        setRoutesCount(item.routes.length + '+');
       }
     }
 
