@@ -1,7 +1,11 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '../../../utils/mongodb';
 
 //TODO Add secret key to prevent unauthorized access
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const body = req.body;
   if (req.method === 'PUT') {
     if (!body) {
@@ -14,10 +18,10 @@ export default async function handler(req, res) {
       const client = await clientPromise;
       const db = client.db('Climbing-crags');
       const routesCollection = db.collection('routes');
-      const routesCursor = await routesCollection.findOneAndUpdate(
+      const routesCursor = routesCollection.findOneAndUpdate(
         { id: body.id },
         {
-          $push: {
+          _$push: {
             images: {
               $each: [{ src: body.imageSrc, id: body.cloudinaryId }],
               $position: 0,

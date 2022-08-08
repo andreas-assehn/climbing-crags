@@ -1,6 +1,10 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '../../../../utils/mongodb';
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === 'GET') {
     try {
       const client = await clientPromise;
@@ -30,7 +34,7 @@ export default async function handler(req, res) {
           },
         },
       ];
-      const routeCursor = await routesCollection.aggregate(pipeline);
+      const routeCursor = routesCollection.aggregate(pipeline);
       const routes = await routeCursor.toArray();
       return res.status(200).json(routes);
     } catch (error) {
