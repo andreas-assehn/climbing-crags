@@ -68,8 +68,6 @@ export default function RoutePage({ route, comments }: RoutePage) {
     try {
       const cloudinaryId = process.env.NEXT_PUBLIC_CLOUDINARY_ID;
       const form = e.currentTarget as HTMLFormElement;
-      console.log(form.elements);
-
       const fileInput = Array.from(form.elements).find(
         (name: any) => name.name === 'file'
       );
