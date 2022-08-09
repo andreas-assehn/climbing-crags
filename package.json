@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.1",
@@ -30,6 +31,7 @@
     "@tsconfig/recommended": "^1.0.1",
     "@types/react": "^18.0.15",
     "autoprefixer": "^10.4.7",
+    "cypress": "^10.4.0",
     "eslint": "8.20.0",
     "eslint-config-next": "12.2.3",
     "eslint-plugin-promise": "^6.0.0",

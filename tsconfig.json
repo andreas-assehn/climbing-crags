@@ -12,7 +12,8 @@
     "incremental": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "types": ["cypress"]
   },
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended",
