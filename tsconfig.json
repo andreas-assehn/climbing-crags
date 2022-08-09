@@ -22,8 +22,9 @@
     "types/additional.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/comments/index.js",
-    "pages/api/routes/index.ts"
+    "./node_modules/cypress",
+    "cypress.config.js",
+    "cypress/e2e/first.cy.js"
   ],
   "exclude": ["node_modules"]
 }

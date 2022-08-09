@@ -32,7 +32,7 @@ yarn-error.log*
 .env.test
 
 # cypress config
-cypress.config.ts
+cypress.config.js
 
 # vercel
 .vercel
