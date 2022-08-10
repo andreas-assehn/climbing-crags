@@ -27,7 +27,7 @@ export default function RoutesTable({ routes, crag, sector }: RoutesTableType) {
       {routes.map((item, i) => {
         return (
           <Link key={i} href={`/route/${item.id}`}>
-            <a>
+            <a data-cy="routeItem">
               <div className="grid grid-cols-12 border-y border-white p-3 text-sm md:text-xl gap-6 font-semibold hover:bg-dark-card">
                 <div className="col-span-1 text-white-true flex items-center justify-center">
                   {getFrGrade(item.grade_id)}
