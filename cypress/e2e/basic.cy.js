@@ -80,5 +80,48 @@ describe('Basic functionality', () => {
       cy.contains('1.0');
     });
   });
-  it('shows a crag page when entering a valid /crag/:cragNumber url', () => {});
+
+  it('shows a crag page when entering a valid /crag/:cragNumber url', () => {
+    cy.visit('/crag/napoleonica');
+    cy.contains('Napoleonica').next().contains('ITA');
+    cy.contains('N° Sectors:').contains('16');
+    cy.contains('N° Sectors:').filter(':visible').parent().as('card');
+    cy.get('@card').within(() => {
+      cy.contains('Grades:').contains('3a - 7b');
+      cy.contains("People's rating:");
+      cy.get('img').should('have.length', '10');
+    });
+    cy.contains('Sectors');
+    cy.contains('Mano di Fatima').parent().as('manoCard');
+    cy.get('@manoCard').within(() => {
+      cy.get('img').should('have.length', '2');
+      cy.contains('5a - 6a+');
+      cy.contains('10+ routes');
+      cy.contains('0.3');
+      cy.contains('Napoleonica');
+      cy.contains('ITA');
+      cy.get('a').contains('see more');
+    });
+    cy.contains('Cristo').parent().as('cristoCard');
+    cy.get('@cristoCard').within(() => {
+      cy.get('img').should('have.length', '2');
+      cy.contains('5a - 6b+');
+      cy.contains('10+ routes');
+      cy.contains('1.6');
+      cy.contains('Napoleonica');
+      cy.contains('ITA');
+      cy.get('a').contains('see more');
+    });
+    cy.get('button').contains('Load More').click();
+    cy.contains('Piccolo Cottolengo').parent().as('piccoloCard');
+    cy.get('@piccoloCard').within(() => {
+      cy.get('img').should('have.length', '2');
+      cy.contains('6a - 6c+');
+      cy.contains('10+ routes');
+      cy.contains('1.3');
+      cy.contains('Napoleonica');
+      cy.contains('ITA');
+      cy.get('a').contains('see more');
+    });
+  });
 });

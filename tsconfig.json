@@ -24,7 +24,7 @@
     "**/*.tsx",
     "./node_modules/cypress",
     "cypress.config.js",
-    "cypress/e2e/first.cy.js"
+    "cypress/e2e/basic.cy.js"
   ],
   "exclude": ["node_modules"]
 }

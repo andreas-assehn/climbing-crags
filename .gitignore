@@ -33,6 +33,7 @@ yarn-error.log*
 
 # cypress config
 cypress.config.js
+cypress.config.ts
 
 # vercel
 .vercel
