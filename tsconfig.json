@@ -12,7 +12,8 @@
     "incremental": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "types": ["cypress"]
   },
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended",
@@ -21,8 +22,9 @@
     "types/additional.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/comments/index.js",
-    "pages/api/routes/index.ts"
+    "./node_modules/cypress",
+    "cypress.config.js",
+    "cypress/e2e/basic.cy.js"
   ],
   "exclude": ["node_modules"]
 }
