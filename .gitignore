@@ -28,5 +28,11 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# env files for testing
+.env.test
+
+# cypress config
+cypress.env.json
+
 # vercel
 .vercel

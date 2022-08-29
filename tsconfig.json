@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "types": ["cypress"]
+  },
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Recommended",
+  "include": [
+    "next-env.d.ts",
+    "types/additional.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "./node_modules/cypress",
+    "cypress.config.js",
+    "cypress/e2e/basic.cy.js"
+  ],
+  "exclude": ["node_modules"]
+}
